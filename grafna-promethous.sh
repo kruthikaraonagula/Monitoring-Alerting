@@ -125,7 +125,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-# ============ 6. Alert Rules ============
+# ============ 6. Alert Rules (FIXED SYNTAX ONLY) ============
 sudo tee /etc/prometheus/alert.rules.yml >/dev/null <<'EOF'
 groups:
 - name: system-alerts
@@ -137,17 +137,17 @@ groups:
       severity: critical
 
   - alert: HighCPUUsage
-  expr: 100 - (
-    sum by(instance) (rate(node_cpu_seconds_total{mode="idle"}[1m]))
-    /
-    sum by(instance) (rate(node_cpu_seconds_total[1m]))
-  ) * 100 > 40
-  for: 2m
-  labels:
-    severity: warning
-  annotations:
-    summary: "High CPU usage on {{ $labels.instance }}"
-    description: "CPU usage is above 40% for more than 2 minutes"
+    expr: 100 - (
+      sum by(instance) (rate(node_cpu_seconds_total{mode="idle"}[1m]))
+      /
+      sum by(instance) (rate(node_cpu_seconds_total[1m]))
+    ) * 100 > 40
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU usage on {{ $labels.instance }}"
+      description: "CPU usage is above 40% for more than 2 minutes"
 
   - alert: HighDiskUsage
     expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) * 100 > 80
@@ -156,7 +156,7 @@ groups:
       severity: warning
 EOF
 
-# ============ 7. Prometheus Config (EC2 AUTO DISCOVERY) ============
+# ============ 7. Prometheus Config (UNCHANGED) ============
 sudo tee /etc/prometheus/prometheus.yml >/dev/null <<'EOF'
 global:
   scrape_interval: 15s
