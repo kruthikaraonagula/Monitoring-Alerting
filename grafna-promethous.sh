@@ -190,7 +190,7 @@ scrape_configs:
         target_label: __address__
         replacement: "$1:9100"
 
-      - source_labels: [__meta_ec2_tag_Name]
+      - source_labels: [__meta_ec2_private_ip]
         target_label: instance
 EOF
 
