@@ -140,13 +140,13 @@ groups:
           description: "Prometheus target {{ $labels.instance }} has been unreachable for more than 1 minute."
 
       - alert: HighCPUUsage
-        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 40
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 10
         for: 2m
         labels:
           severity: critical
         annotations:
           summary: "High CPU usage detected on {{ $labels.instance }}"
-          description: "CPU usage > 20% for more than 2 minutes. VALUE = {{ $value }}%"
+          description: "CPU usage > 10% for more than 2 minutes. VALUE = {{ $value }}%"
 
       - alert: HighDiskUsage
         expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} 
